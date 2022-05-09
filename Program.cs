@@ -14,7 +14,7 @@ namespace ATMConsoleAPP
         public static string[] menuOptions = {"1", "2", "3", "4"};
 
         // User Balance of funds
-        public static decimal balance;
+        public static decimal balance = 0;
 
         // menu option that user has selected
         public static string userOption = "";
@@ -86,11 +86,11 @@ namespace ATMConsoleAPP
 
                 if (check)
                 {
-                    Console.WriteLine("Your input " + userInput + " is valid");
+                    Console.WriteLine("\tYour input " + userInput + " is valid");
                 }
                 else
                 {
-                    Console.WriteLine("Your input " + userInput + " is not valid");
+                    Console.WriteLine("\tYour input " + userInput + " is not valid\n\n");
                 }
 
                 userOption = userInput;
@@ -103,24 +103,51 @@ namespace ATMConsoleAPP
 
         static void ProcessMenu()
         {
+            decimal amount;
+            
             if(userOption == "1")
             {
-                Console.WriteLine("\t [1] View Balance");
+                Console.WriteLine("\t Your balance is " + "$" + balance);
+                Console.WriteLine("\n\n");
+                if(balance <= 0)
+                {
+                    Console.WriteLine("\tYou need to deposit some money.\n\n");
+                }
                 MainMenu();
             }
             if (userOption == "2")
             {
-                Console.WriteLine("\t [2] Withdraw Funds");
+                Console.WriteLine("\t Input how much you want to withdraw.\n");
+                
+                if(decimal.TryParse(Console.ReadLine(), out amount) && balance > amount)
+                {
+                    balance -= amount;
+                    Console.WriteLine("\tYou withdrew $" + amount + " Your balance is now $" + balance + "\n\n");
+                }
+                else
+                {
+                    Console.WriteLine("\tInvalid Amount or you have insufficent funds.\n\n");
+                }
                 MainMenu();
             }
             if (userOption == "3")
             {
-                Console.WriteLine("\t [3] Deposit Funds");
+                Console.WriteLine("\t [3] Deposit Funds\n\n");
+
+                if (decimal.TryParse(Console.ReadLine(), out amount))
+                {
+                    balance += amount;
+                    Console.WriteLine("\tYou deposited $" + amount + " Your balance is now $" + balance + "\n\n");
+                }
+                else
+                {
+                    Console.WriteLine("\tInvalid Amount.\n\n");
+                }
                 MainMenu();
             }
             if (userOption == "4")
             {
-                Console.WriteLine("\t [4] Exit Application");
+                Environment.Exit(0);
             }
         } // end ProcessMenu
 
